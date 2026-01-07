@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-background text-gray-100 font-sans antialiased;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply bg-surface/80 backdrop-blur-md border border-white/5;
+  }
+
+  .glass-card {
+    @apply glass rounded-2xl p-6 transition-all duration-300 hover:border-white/10 hover:bg-surface/90;
+  }
+
+  .btn {
+    @apply px-4 py-2 rounded-xl font-medium transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-primary {
+    @apply btn bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20;
+  }
+
+  .btn-secondary {
+    @apply btn bg-surface border border-white/10 hover:bg-surface-lighter text-gray-100;
+  }
+
+  .input-field {
+    @apply w-full bg-surface-lighter border border-white/5 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-background;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-surface-lighter rounded-full border-2 border-background;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-700;
+}
+
+/* Floating Animation for Particles */
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0) translateX(0);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  90% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(-100vh) translateX(calc(100vw * (var(--random, 0.5) - 0.5)));
+    opacity: 0;
+  }
+}
+
+.animate-float {
+  animation: float linear infinite;
+}

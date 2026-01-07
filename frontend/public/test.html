@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tailwind Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        background: '#0a0b0d',
+                        surface: '#121418',
+                        'surface-lighter': '#1e2126',
+                        primary: '#3b82f6',
+                        secondary: '#10b981',
+                        accent: '#f59e0b',
+                        danger: '#ef4444',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-background text-gray-100">
+    <div class="min-h-screen flex items-center justify-center p-4">
+        <div class="w-full max-w-md bg-surface/80 backdrop-blur-md border border-white/5 rounded-2xl p-8">
+            <div class="flex flex-col items-center mb-10 text-center">
+                <div
+                    class="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mb-6 shadow-xl shadow-primary/20">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                    </svg>
+                </div>
+                <h2 class="text-3xl font-bold mb-2">Welcome Back</h2>
+                <p class="text-gray-400">Securely sign in to your crypto portfolio</p>
+            </div>
+
+            <form class="space-y-6">
+                <div class="space-y-2">
+                    <label class="text-sm font-medium text-gray-300 ml-1">Email Address</label>
+                    <input type="email"
+                        class="w-full bg-surface-lighter border border-white/5 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+                        placeholder="name@example.com" />
+                </div>
+
+                <div class="space-y-2">
+                    <label class="text-sm font-medium text-gray-300 ml-1">Password</label>
+                    <input type="password"
+                        class="w-full bg-surface-lighter border border-white/5 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+                        placeholder="••••••••" />
+                </div>
+
+                <button type="submit"
+                    class="w-full px-4 py-3 rounded-xl font-medium transition-all duration-200 bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20">
+                    Sign In
+                </button>
+            </form>
+
+            <p class="mt-8 text-center text-gray-400 text-sm">
+                Don't have an account?
+                <a href="#" class="text-primary hover:underline font-semibold">Create an account</a>
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Login</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .form-group { margin: 10px 0; }
+        input { padding: 8px; width: 200px; }
+        button { padding: 10px 15px; margin: 5px; }
+        .log { background: #f5f5f5; padding: 10px; margin: 10px 0; border-left: 3px solid #007bff; }
+        .error { border-left-color: #dc3545; }
+        .success { border-left-color: #28a745; }
+    </style>
+</head>
+<body>
+    <h1>Debug Login Test</h1>
+    
+    <div class="form-group">
+        <label>Email:</label>
+        <input type="email" id="email" value="test@example.com">
+    </div>
+    
+    <div class="form-group">
+        <label>Password:</label>
+        <div style="position: relative; display: flex; align-items: center;">
+            <input type="password" id="password" value="password123" style="padding-right: 40px;">
+            <button type="button" onclick="toggleDebugPassword()" style="position: absolute; right: 10px; background: none; border: none; cursor: pointer; color: #666;">
+                <i class="fas fa-eye" id="debugPasswordEye"></i>
+            </button>
+        </div>
+    </div>
+    
+    <button onclick="debugLogin()">Debug Login</button>
+    <button onclick="clearLogs()">Clear Logs</button>
+    
+    <div id="logs"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        function log(message, type = 'info') {
+            const logsDiv = document.getElementById('logs');
+            const logDiv = document.createElement('div');
+            logDiv.className = `log ${type}`;
+            logDiv.innerHTML = `<strong>${new Date().toLocaleTimeString()}:</strong> ${message}`;
+            logsDiv.appendChild(logDiv);
+        }
+        
+        function clearLogs() {
+            document.getElementById('logs').innerHTML = '';
+        }
+        
+        function toggleDebugPassword() {
+            const input = document.getElementById('password');
+            const eyeIcon = document.getElementById('debugPasswordEye');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                eyeIcon.classList.remove('fa-eye');
+                eyeIcon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                eyeIcon.classList.remove('fa-eye-slash');
+                eyeIcon.classList.add('fa-eye');
+            }
+        }
+        
+        async function debugLogin() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            log(`Starting login process for: ${email}`);
+            
+            try {
+                log('Checking if axios is loaded...');
+                if (typeof axios === 'undefined') {
+                    log('❌ Axios is not loaded!', 'error');
+                    return;
+                }
+                log('✅ Axios is loaded');
+                
+                log('Testing backend connection...');
+                const testResponse = await axios.get('http://localhost:3001/');
+                log(`✅ Backend connection successful: ${testResponse.data.message}`, 'success');
+                
+                log('Attempting login...');
+                const loginData = { email, password };
+                log(`Login data: ${JSON.stringify(loginData)}`);
+                
+                const response = await axios.post('http://localhost:3001/api/auth/login', loginData);
+                
+                log(`✅ Login successful!`, 'success');
+                log(`Response status: ${response.status}`);
+                log(`Response data: ${JSON.stringify(response.data, null, 2)}`);
+                
+                if (response.data.token) {
+                    log('✅ Token received', 'success');
+                    localStorage.setItem('authToken', response.data.token);
+                    localStorage.setItem('currentUser', JSON.stringify(response.data.member));
+                    log('✅ Data saved to localStorage', 'success');
+                } else {
+                    log('❌ No token in response', 'error');
+                }
+                
+            } catch (error) {
+                log(`❌ Login failed`, 'error');
+                log(`Error type: ${error.constructor.name}`);
+                log(`Error message: ${error.message}`);
+                
+                if (error.response) {
+                    log(`Response status: ${error.response.status}`);
+                    log(`Response data: ${JSON.stringify(error.response.data, null, 2)}`);
+                } else if (error.request) {
+                    log('No response received from server');
+                    log('Check if backend is running on port 3001');
+                } else {
+                    log(`Request setup error: ${error.message}`);
+                }
+            }
+        }
+        
+        // Test on page load
+        window.onload = () => {
+            log('Page loaded, testing environment...');
+            if (typeof axios !== 'undefined') {
+                log('✅ Axios loaded successfully', 'success');
+            } else {
+                log('❌ Axios not loaded', 'error');
+            }
+        };
+    </script>
+</body>
+</html>
